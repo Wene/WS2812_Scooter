@@ -20,47 +20,84 @@ void setup() {
     memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
     FastLED.show();
     
-    delay(2000);
+    // delay(2000);
 }
 
 bool up = true;
+unsigned int loopCount = 0;
+int startPos = 0;
 
 void loop()
 {
-  for(int iLED = 0; iLED < NUM_LEDS; iLED++)
+  loopCount++;
+  if(loopCount < 2000)
   {
-    if(iLED % 3 == 0)
+    for(int iLED = 0; iLED < NUM_LEDS; iLED++)
     {
-      leds[iLED].setRGB(255, 0, 0);
+      if(iLED % 3 == 0)
+      {
+        leds[iLED].setRGB(255, 0, 0);
+      }
+      else if(iLED % 3 == 1)
+      {
+        leds[iLED].setRGB(255, 255, 255);
+      }
+      else
+      {
+        leds[iLED].setRGB(0, 255, 0);
+      }
     }
-    else if(iLED % 3 == 1)
+    if(up)
     {
-      leds[iLED].setRGB(255, 255, 255);
+      brightness++;
+      if(brightness >= maxBrightness)
+      {
+        up = false;
+      }
     }
     else
     {
-      leds[iLED].setRGB(0, 255, 0);
+      brightness--;
+      if(brightness <= minBrightness)
+      {
+        up = true;
+      }
     }
+    FastLED.setBrightness(brightness);
   }
-  if(up)
+  else if(loopCount < 4000)
   {
-    brightness++;
-    if(brightness > maxBrightness)
+    memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
+    FastLED.setBrightness(maxBrightness - 30);
+    for(int iLED = startPos; iLED < startPos + 7; iLED++)
     {
-      brightness = maxBrightness;
-      up = false;
+      leds[iLED].r = 255;
+    }
+    for(int iLED = NUM_LEDS - 1 - startPos; iLED > NUM_LEDS - 1 - startPos - 7; iLED--)
+    {
+      leds[iLED].b = 255;
+    }
+    if(up)
+    {
+      startPos++;
+      if(startPos >= NUM_LEDS - 7)
+      {
+        up = false;
+      }
+    }
+    else
+    {
+      startPos--;
+      if(startPos <= 0)
+      {
+        up = true;
+      }
     }
   }
   else
   {
-    brightness--;
-    if(brightness < minBrightness)
-    {
-      brightness = minBrightness;
-      up = true;
-    }
+    loopCount = 0;
   }
-  FastLED.setBrightness(brightness);
   FastLED.show();
   delay(20);
 }
