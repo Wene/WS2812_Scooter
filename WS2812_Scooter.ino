@@ -26,6 +26,7 @@ void setup() {
 bool up = true;
 unsigned int loopCount = 0;
 int startPos = 0;
+uint8_t rainbowPos = 0;
 
 void loop()
 {
@@ -92,6 +93,16 @@ void loop()
       {
         up = true;
       }
+    }
+  }
+  else if(loopCount < 6000)
+  {
+    FastLED.setBrightness(maxBrightness - 50);
+    uint8_t hue = rainbowPos++;  // get start position and increase global position for next run
+    for(int iLED = 0; iLED < NUM_LEDS; iLED++)
+    {
+      leds[iLED] = CHSV(hue, 255, 255);
+      hue += 255 / NUM_LEDS;  // because it's a uint8_t after 254 it will overflow to 0
     }
   }
   else
