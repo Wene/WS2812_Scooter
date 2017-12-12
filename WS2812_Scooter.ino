@@ -14,6 +14,8 @@ void setup() {
     //reset all the LEDs
     leds.nscale8(0);
     FastLED.show();
+
+    randomSeed(analogRead(A2));
     
     // delay(2000);
 }
@@ -27,7 +29,7 @@ int brightness = 50;
 void loop()
 {
   loopCount++;
-  if(loopCount < 2000)
+  if(loopCount < 500)
   {
     for(int iLED = 0; iLED < NUM_LEDS; iLED++)
     {
@@ -61,7 +63,7 @@ void loop()
       }
     }
   }
-  else if(loopCount < 4000)
+  else if(loopCount < 1000)
   {
     leds.fadeToBlackBy(50);
     for(int iLED = startPos; iLED < startPos + 4; iLED++)
@@ -91,7 +93,7 @@ void loop()
       }
     }
   }
-  else if(loopCount < 6000)
+  else if(loopCount < 1500)
   {
     uint8_t hue = rainbowPos++;  // get start position and increase global position for next run
     for(int iLED = 0; iLED < NUM_LEDS; iLED++)
@@ -99,6 +101,12 @@ void loop()
       leds[iLED] = CHSV(hue, 255, 255);
       hue += 255 / NUM_LEDS;  // because it's a uint8_t after 254 it will overflow to 0
     }
+  }
+  else if(loopCount < 8000)
+  {
+    int iLED = random(NUM_LEDS);
+    leds.fadeToBlackBy(40);
+    leds[iLED].setRGB(180, 0, 180);
   }
   else
   {
