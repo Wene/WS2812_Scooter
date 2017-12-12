@@ -3,7 +3,7 @@
 // define the number of LEDs
 #define NUM_LEDS 60
 
-CRGB leds[NUM_LEDS];
+CRGBArray<NUM_LEDS> leds;
 
 
 int minBrightness = 10;
@@ -17,7 +17,7 @@ void setup() {
     FastLED.addLeds<WS2812, 10, GRB>(leds, NUM_LEDS); //GRB for the WS2812 color order
 
     //reset all the LEDs
-    memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
+    leds.nscale8(0);
     FastLED.show();
     
     // delay(2000);
@@ -68,20 +68,20 @@ void loop()
   }
   else if(loopCount < 4000)
   {
-    memset(leds, 0,  NUM_LEDS * sizeof(struct CRGB));
+    leds.fadeToBlackBy(50);
     FastLED.setBrightness(maxBrightness - 30);
-    for(int iLED = startPos; iLED < startPos + 7; iLED++)
+    for(int iLED = startPos; iLED < startPos + 4; iLED++)
     {
       leds[iLED].r = 255;
     }
-    for(int iLED = NUM_LEDS - 1 - startPos; iLED > NUM_LEDS - 1 - startPos - 7; iLED--)
+    for(int iLED = NUM_LEDS - 1 - startPos; iLED > NUM_LEDS - 1 - startPos - 4; iLED--)
     {
       leds[iLED].b = 255;
     }
     if(up)
     {
       startPos++;
-      if(startPos >= NUM_LEDS - 7)
+      if(startPos >= NUM_LEDS - 4)
       {
         up = false;
       }
