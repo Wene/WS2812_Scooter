@@ -1,4 +1,5 @@
 #include "FastLED.h"
+#include "key.h"
 
 // define the number of LEDs
 #define NUM_LEDS 60
@@ -6,15 +7,16 @@
 #define LED_PIN 10
 #define BTN_PIN 11
 
+Key key(BTN_PIN);
+
 CRGBArray<NUM_LEDS> leds;
 
-void setup() {
-  pinMode(BTN_PIN, INPUT_PULLUP);
 
+void setup() {
   //setting maximum brightness
   FastLED.setBrightness(80);
 
-  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS); //GRB for the WS2812 color order
+  FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);  //GRB for the WS2812 color order
 
   //reset all the LEDs
   leds.nscale8(0);
@@ -22,52 +24,32 @@ void setup() {
 
   randomSeed(analogRead(A2));
 
-  // delay(2000);
 }
 
 bool up = true;
-unsigned int loopCount = 0;
 int startPos = 0;
 uint8_t rainbowPos = 0;
 int brightness = 50;
 
-bool powerOn = true;
-int btnCount = 0;
-bool doCount = true;
-
+int mode = 0;
+uint8_t countDown = 255;
 
 void loop()
 {
-  if(digitalRead(BTN_PIN) == LOW)
+  key.read();
+  if (key.nextMode())
   {
-    btnCount++;
-    if(btnCount == 5)
+    mode++;
+    if (mode > 3)
     {
-      doCount = !doCount;
-    }
-    if(btnCount == 50)
-    {
-      powerOn = !powerOn;
-    }
-    if(!powerOn)
-    {
-      leds.fadeToBlackBy(255);
-      FastLED.show();
+      mode = 0;
     }
   }
-  else
-  {
-    btnCount = 0;
-  }
 
-  if(powerOn)
+  if (key.powerOn())
   {
-    if(doCount)
-    {
-      loopCount++;
-    }
-
-    if (loopCount < 1000)
+    countDown = 255;
+    if (mode == 0)
     {
       for (int iLED = 0; iLED < NUM_LEDS; iLED++)
       {
@@ -101,7 +83,7 @@ void loop()
         }
       }
     }
-    else if (loopCount < 2000)
+    else if (mode == 1)
     {
       leds.fadeToBlackBy(50);
       for (int iLED = startPos; iLED < startPos + 4; iLED++)
@@ -131,7 +113,7 @@ void loop()
         }
       }
     }
-    else if (loopCount < 3000)
+    else if (mode == 2)
     {
       uint8_t hue = rainbowPos++;  // get start position and increase global position for next run
       for (int iLED = 0; iLED < NUM_LEDS; iLED++)
@@ -140,18 +122,23 @@ void loop()
         hue += 255 / NUM_LEDS;  // because it's a uint8_t after 254 it will overflow to 0
       }
     }
-    else if (loopCount < 4000)
+    else if (mode == 3)
     {
       int iLED = random(NUM_LEDS);
       leds.fadeToBlackBy(40);
       leds[iLED].setRGB(180, 0, 180);
     }
-    else
-    {
-      loopCount = 0;
-    }
 
     FastLED.show();
+  }
+  else
+  {
+    if(countDown > 0)
+    {
+      leds.fadeToBlackBy(1);
+      countDown--;
+      FastLED.show();
+    }
   }
 
   delay(20);
