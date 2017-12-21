@@ -22,6 +22,7 @@ void setup() {
   leds.nscale8(0);
   FastLED.show();
 
+  // initialize random renerator with true random value (hopefully)
   randomSeed(analogRead(A2));
 
 }
@@ -29,9 +30,9 @@ void setup() {
 bool up = true;
 int startPos = 0;
 uint8_t rainbowPos = 0;
-int brightness = 50;
+int brightness = 100;
 
-int mode = 0;
+int mode = 1;
 uint8_t countDown = 255;
 
 void loop()
@@ -42,26 +43,32 @@ void loop()
     mode++;
     if (mode > 3)
     {
-      mode = 0;
+      mode = 1;
     }
   }
 
   if (key.powerOn())
   {
+    if (key.lightOn())
+    {
+      mode = 0;
+    }
+
     countDown = 255;
+
     if (mode == 0)
     {
       for (int iLED = 0; iLED < NUM_LEDS; iLED++)
       {
-        if (iLED % 3 == 0)
+        if (iLED % 3 == 0)  // left
         {
           leds[iLED].setRGB(brightness, 0, 0);
         }
-        else if (iLED % 3 == 1)
+        else if (iLED % 3 == 1)  // front
         {
-          leds[iLED].setRGB(brightness, brightness, brightness);
+          leds[iLED].setRGB(255, 255, 255);
         }
-        else
+        else  // right
         {
           leds[iLED].setRGB(0, brightness, 0);
         }
@@ -69,7 +76,7 @@ void loop()
       if (up)
       {
         brightness++;
-        if (brightness >= 200)
+        if (brightness >= 120)
         {
           up = false;
         }
@@ -77,7 +84,7 @@ void loop()
       else
       {
         brightness--;
-        if (brightness <= 80)
+        if (brightness <= 50)
         {
           up = true;
         }
@@ -133,7 +140,7 @@ void loop()
   }
   else
   {
-    if(countDown > 0)
+    if (countDown > 0)
     {
       leds.fadeToBlackBy(1);
       countDown--;

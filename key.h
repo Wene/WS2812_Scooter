@@ -8,6 +8,7 @@ class Key
     void read();
     bool powerOn();
     bool nextMode();
+    bool lightOn();
 
   private:
     int keyPin;
@@ -20,6 +21,7 @@ class Key
     bool powerState;
     bool cycle;
     bool autoCycle;
+    bool light;
 };
 
 #endif

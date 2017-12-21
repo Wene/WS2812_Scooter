@@ -10,6 +10,7 @@ Key::Key(int pin)
   cycle = false;
   autoCycle = false;
   cycleCount = 0;
+  light = false;
 
   keyPin = pin;
   pinMode(keyPin, INPUT_PULLUP);
@@ -48,6 +49,10 @@ void Key::read()
         case 2:
           autoCycle = !autoCycle;
           break;
+        case 3:
+          light = true;
+          autoCycle = false;
+          break;
         default:
           // nothing...
           break;
@@ -85,6 +90,16 @@ bool Key::nextMode()
     return true;
   }
 
+  return false;
+}
+
+bool Key::lightOn()
+{
+  if (light)
+  {
+    light = false;
+    return true;
+  }
   return false;
 }
 
