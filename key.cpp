@@ -45,9 +45,10 @@ void Key::read()
       {
         case 1:
           cycle = true;
+          autoCycle = false;
           break;
         case 2:
-          autoCycle = !autoCycle;
+          autoCycle = true;
           break;
         case 3:
           light = true;

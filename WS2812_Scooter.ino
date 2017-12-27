@@ -1,5 +1,6 @@
 #include "FastLED.h"
 #include "key.h"
+#include "rainbow.h"
 
 // define the number of LEDs
 #define NUM_LEDS 60
