@@ -4,6 +4,7 @@
 #include "sparkling.h"
 #include "police.h"
 #include "streetlight.h"
+#include "colorsnow.h"
 
 // define the number of LEDs
 #define NUM_LEDS 60
@@ -21,6 +22,7 @@ Rainbow rainbow(leds, NUM_LEDS);
 Sparkling sparkling(leds, NUM_LEDS);
 Police police(leds, NUM_LEDS);
 StreetLight streetlight(leds, NUM_LEDS);
+ColorSnow colorsnow(leds, NUM_LEDS);
 
 void setup() {
   //setting maximum brightness
@@ -46,7 +48,7 @@ void loop()
   if (key.nextMode())
   {
     mode++;
-    if (mode > 3)
+    if (mode > 4)
     {
       mode = 1;
     }
@@ -74,6 +76,9 @@ void loop()
         break;
       case 3:
         sparkling.animate();
+        break;
+      case 4:
+        colorsnow.animate();
         break;
     }
 
