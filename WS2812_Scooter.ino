@@ -12,6 +12,7 @@ Key key(BTN_PIN);
 
 CRGBArray<NUM_LEDS> leds;
 
+Rainbow rainbow(leds, NUM_LEDS);
 
 void setup() {
   //setting maximum brightness
@@ -30,7 +31,6 @@ void setup() {
 
 bool up = true;
 int startPos = 0;
-uint8_t rainbowPos = 0;
 int brightness = 100;
 
 int mode = 1;
@@ -123,12 +123,7 @@ void loop()
     }
     else if (mode == 2)
     {
-      uint8_t hue = rainbowPos++;  // get start position and increase global position for next run
-      for (int iLED = 0; iLED < NUM_LEDS; iLED++)
-      {
-        leds[iLED] = CHSV(hue, 255, 255);
-        hue += 255 / NUM_LEDS;  // because it's a uint8_t after 254 it will overflow to 0
-      }
+      rainbow.animate();
     }
     else if (mode == 3)
     {
