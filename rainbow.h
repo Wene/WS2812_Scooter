@@ -2,7 +2,6 @@
 #define RAINBOW_H
 
 #include "animation.h"
-#include "FastLED.h"
 
 class Rainbow : public Animation
 {

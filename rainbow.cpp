@@ -1,6 +1,4 @@
 #include "rainbow.h"
-#include "Arduino.h"
-#include "FastLED.h"
 
 Rainbow::Rainbow(CRGB *ledPtr, int numLEDs) : Animation(ledPtr, numLEDs)
 {

@@ -1,10 +1,14 @@
 #include "FastLED.h"
 #include "key.h"
 #include "rainbow.h"
+#include "sparkling.h"
+#include "police.h"
+#include "streetlight.h"
 
 // define the number of LEDs
 #define NUM_LEDS 60
 
+// define the pins
 #define LED_PIN 10
 #define BTN_PIN 11
 
@@ -12,7 +16,11 @@ Key key(BTN_PIN);
 
 CRGBArray<NUM_LEDS> leds;
 
+// initiate all my animations objects
 Rainbow rainbow(leds, NUM_LEDS);
+Sparkling sparkling(leds, NUM_LEDS);
+Police police(leds, NUM_LEDS);
+StreetLight streetlight(leds, NUM_LEDS);
 
 void setup() {
   //setting maximum brightness
@@ -28,10 +36,6 @@ void setup() {
   randomSeed(analogRead(A2));
 
 }
-
-bool up = true;
-int startPos = 0;
-int brightness = 100;
 
 int mode = 1;
 uint8_t countDown = 255;
@@ -57,79 +61,20 @@ void loop()
 
     countDown = 255;
 
-    if (mode == 0)
+    switch (mode)
     {
-      for (int iLED = 0; iLED < NUM_LEDS; iLED++)
-      {
-        if (iLED % 3 == 0)  // left
-        {
-          leds[iLED].setRGB(brightness, 0, 0);
-        }
-        else if (iLED % 3 == 1)  // front
-        {
-          leds[iLED].setRGB(255, 255, 255);
-        }
-        else  // right
-        {
-          leds[iLED].setRGB(0, brightness, 0);
-        }
-      }
-      if (up)
-      {
-        brightness++;
-        if (brightness >= 120)
-        {
-          up = false;
-        }
-      }
-      else
-      {
-        brightness--;
-        if (brightness <= 50)
-        {
-          up = true;
-        }
-      }
-    }
-    else if (mode == 1)
-    {
-      leds.fadeToBlackBy(50);
-      for (int iLED = startPos; iLED < startPos + 4; iLED++)
-      {
-        leds[iLED].r = 255;
-      }
-      for (int iLED = NUM_LEDS - 1 - startPos; iLED > NUM_LEDS - 1 - startPos - 4; iLED--)
-      {
-        leds[iLED].b = 255;
-      }
-      if (up)
-      {
-        startPos++;
-        if (startPos >= NUM_LEDS - 4)
-        {
-          startPos = NUM_LEDS - 4;
-          up = false;
-        }
-      }
-      else
-      {
-        startPos--;
-        if (startPos <= 0)
-        {
-          startPos = 0;
-          up = true;
-        }
-      }
-    }
-    else if (mode == 2)
-    {
-      rainbow.animate();
-    }
-    else if (mode == 3)
-    {
-      int iLED = random(NUM_LEDS);
-      leds.fadeToBlackBy(40);
-      leds[iLED].setRGB(180, 0, 180);
+      case 0:
+        streetlight.animate();
+        break;
+      case 1:
+        police.animate();
+        break;
+      case 2:
+        rainbow.animate();
+        break;
+      case 3:
+        sparkling.animate();
+        break;
     }
 
     FastLED.show();
