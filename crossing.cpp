@@ -81,21 +81,42 @@ void Crossing::animate()
   {
     pos = ledCount - 1;
   }
-  leds[pos].r = 255;
+  if (redUp)
+  {
+    leds[pos].r = 255 / 3 + ((255 / 3) * (redPos % 3));
+  }
+  else
+  {
+    leds[pos].r = 255 - ((255 / 3) * (redPos % 3));
+  }
 
   pos = greenPos / 4;
   if (pos > ledCount - 1)
   {
     pos = ledCount - 1;
   }
-  leds[pos].g = 255;
+  if (greenUp)
+  {
+    leds[pos].g = 255 / 4 + ((255 / 4) * (greenPos % 4));
+  }
+  else
+  {
+    leds[pos].g = 255 - ((255 / 4) * (greenPos % 4));
+  }
 
   pos = bluePos / 5;
   if (pos > ledCount - 1)
   {
     pos = ledCount - 1;
   }
-  leds[pos].b = 255;
+  if (blueUp)
+  {
+    leds[pos].b = 255 / 5 + ((255 / 5) * (bluePos % 5));
+  }
+  else
+  {
+    leds[pos].b = 255 - ((255 / 5) * (bluePos % 5));
+  }
 
 }
 
