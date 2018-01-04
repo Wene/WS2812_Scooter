@@ -7,6 +7,7 @@
 #include "colorsnow.h"
 #include "crossing.h"
 #include "bubbles.h"
+#include "rainbowsparkle.h"
 
 // define the number of LEDs
 #define NUM_LEDS 60
@@ -27,6 +28,7 @@ StreetLight streetlight(leds, NUM_LEDS);
 ColorSnow colorsnow(leds, NUM_LEDS);
 Crossing crossing(leds, NUM_LEDS);
 Bubbles bubbles(leds, NUM_LEDS);
+RainbowSparkle rainbowsparkle(leds, NUM_LEDS);
 
 void setup() {
   //setting maximum brightness
@@ -52,7 +54,7 @@ void loop()
   if (key.nextMode())
   {
     mode++;
-    if (mode > 6)
+    if (mode > 7)
     {
       mode = 1;
     }
@@ -89,6 +91,9 @@ void loop()
         break;
       case 6:
         bubbles.animate();
+        break;
+      case 7:
+        rainbowsparkle.animate();
         break;
     }
 
