@@ -8,7 +8,7 @@ Key::Key(int pin)
   shortCount = 0;
   delayCount = 0;
   cycle = false;
-  autoCycle = false;
+  autoCycle = true;
   cycleCount = 0;
   light = false;
 
