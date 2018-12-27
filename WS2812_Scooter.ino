@@ -43,10 +43,14 @@ void setup() {
   // initialize random renerator with true random value (hopefully)
   randomSeed(analogRead(A2));
 
+  pinMode(LED_BUILTIN, OUTPUT);
+
 }
 
 int mode = 1;
 uint8_t countDown = 255;
+
+bool statusIndicator = true;
 
 void loop()
 {
@@ -75,13 +79,13 @@ void loop()
         streetlight.animate();
         break;
       case 1:
-        police.animate();
+        sparkling.animate();
         break;
       case 2:
         rainbow.animate();
         break;
       case 3:
-        sparkling.animate();
+        police.animate();
         break;
       case 4:
         colorsnow.animate();
@@ -108,6 +112,9 @@ void loop()
       FastLED.show();
     }
   }
+
+  statusIndicator = !statusIndicator;
+  digitalWrite(LED_BUILTIN, statusIndicator);
 
   delay(20);
 }

@@ -46,13 +46,18 @@ void Key::read()
         case 1:
           cycle = true;
           autoCycle = false;
+          powerState = true;
           break;
         case 2:
           autoCycle = true;
+          cycleCount = 0; // reset counter
+          cycle = true;    // cycle once to indicate that input was accepted
+          powerState = true;
           break;
         case 3:
           light = true;
           autoCycle = false;
+          powerState = true;
           break;
         default:
           // nothing...
