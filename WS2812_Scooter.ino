@@ -8,6 +8,7 @@
 #include "crossing.h"
 #include "bubbles.h"
 #include "rainbowsparkle.h"
+#include "sparkling-35c3.h"
 
 // define the number of LEDs
 #define NUM_LEDS 60
@@ -23,6 +24,7 @@ CRGBArray<NUM_LEDS> leds;
 // initiate all my animations objects
 Rainbow rainbow(leds, NUM_LEDS);
 Sparkling sparkling(leds, NUM_LEDS);
+Sparkling35c3 sparkling35c3(leds, NUM_LEDS);
 Police police(leds, NUM_LEDS);
 StreetLight streetlight(leds, NUM_LEDS);
 ColorSnow colorsnow(leds, NUM_LEDS);
@@ -44,6 +46,7 @@ void setup() {
   randomSeed(analogRead(A2));
 
   pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(9600);
 
 }
 
@@ -58,7 +61,7 @@ void loop()
   if (key.nextMode())
   {
     mode++;
-    if (mode > 7)
+    if (mode > 8)
     {
       mode = 1;
     }
@@ -79,24 +82,27 @@ void loop()
         streetlight.animate();
         break;
       case 1:
-        sparkling.animate();
+        sparkling35c3.animate();
         break;
       case 2:
-        rainbow.animate();
+        sparkling.animate();
         break;
       case 3:
-        police.animate();
+        rainbow.animate();
         break;
       case 4:
-        colorsnow.animate();
+        police.animate();
         break;
       case 5:
-        crossing.animate();
+        colorsnow.animate();
         break;
       case 6:
-        bubbles.animate();
+        crossing.animate();
         break;
       case 7:
+        bubbles.animate();
+        break;
+      case 8:
         rainbowsparkle.animate();
         break;
     }
